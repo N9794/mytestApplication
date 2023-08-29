@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "61638574755",
+    "project_id": "futurepedia-ff8d4",
+    "storage_bucket": "futurepedia-ff8d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61638574755:android:2e56fa231ea42564f5f516",
+        "android_client_info": {
+          "package_name": "com.futurepedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61638574755-i5plao5cpjp4cf6jou3hqqm4dnu838jj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd-zH8Vz2qvbQbdhddUqx2ER-Cz3iD7YI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61638574755-i5plao5cpjp4cf6jou3hqqm4dnu838jj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
