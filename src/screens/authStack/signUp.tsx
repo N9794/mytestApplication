@@ -17,9 +17,13 @@ const SignUP = () => {
     const [formattedValue, setFormattedValue] = useState("");
     const [email, setEmail] = useState("");
     const [resetPassword, setResetPassword] = useState("");
+    const [confirmPassErr, setConfirmPassErr] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
     const [err, setErr] = useState<any>({});
+    const [showPass, setShowPass] = useState(true);
+    const [showConfirmP, setShowConfirmP] = useState(true);
+
 
     const signUpUser = () => {
         let _error = {};
@@ -38,9 +42,18 @@ const SignUP = () => {
         const resetPasswordError = Validate(validationParam.resetPassword, resetPassword, 'signUpPage');
         if (resetPasswordError !== '') {
             _error = { ..._error, resetPasswordError: resetPasswordError };
+
+     //dhruv
+            setConfirmPassErr('')
+        }else if(password !== resetPassword)
+        {
+          setConfirmPassErr("Your Passwords Doesn't match")
+        }else{
+            setConfirmPassErr('')
         }
         setErr(_error ?? {});
-        if (phone && email && password ) {
+        if(password ==resetPassword){
+        if (phone && email && password ) {     
          const data ={phone: phone, email:email , password :password}
             dispatch(setAllUserDetail(data))
             Show_Toast("You are user now.")
@@ -49,9 +62,10 @@ const SignUP = () => {
             setPassword('')
             setErr({})
             setPhone('')
+            navigation.navigate("SignIn") 
         }
-
-
+    }
+     //dhruv
        
 
 
@@ -75,7 +89,7 @@ const SignUP = () => {
                 defaultCode="IN"
                 layout="first"
                 value={phone}
-                maxLength='15'
+                maxLength={15}
                 onChangeText={(text) => { setPhone(text); }}
                 onChangeFormattedText={(text) => { setFormattedValue(text); }}
                 keyboardType="phone-pad"
@@ -94,7 +108,7 @@ const SignUP = () => {
 
             <View style={[styles.textInpurViewStyle, { marginTop: hp("2%") }]} >
                 <TextInput
-                    style={styles.textInputStyle}
+                    style={[styles.textInputStyle,{width:'100%'}]}
                      value={email}
                     placeholder="Email"
                     onChangeText={(text) => setEmail(text)}
@@ -107,32 +121,39 @@ const SignUP = () => {
             {err?.email &&<Text style={styles.errorMsg}>{err?.email}</Text>}
             <View style={[styles.textInpurViewStyle, { marginTop: hp("1%") }]} >
                 <TextInput
-                    style={styles.textInputStyle}
-                     value={password}
+                    style={[styles.textInputStyle,{width:'80%'}]}
+                    value={password}
                     placeholder="Password"
                     onChangeText={(text) => { setPassword(text) }}
                     placeholderTextColor={"#777777"}
                     autoCorrect={false}
-                    secureTextEntry={true}
+                    secureTextEntry={showPass}
                     autoCapitalize="words"
                     maxLength={16} />
+                <TouchableOpacity onPress={()=>setShowPass(!showPass)}>
+                    <Text>{showPass?'Show':'Hide'}</Text>
+                </TouchableOpacity>
             </View>
             {err?.password &&<Text style={styles.errorMsg}>{err?.password}</Text>}
 
             <View style={[styles.textInpurViewStyle, { marginTop: hp("1%"),  }]} >
                 <TextInput
-                    style={[styles.textInputStyle,]}
+                    style={[styles.textInputStyle,{width:'80%'}]}
                      value={resetPassword}
                     placeholder="Confirm  Password"
                     onChangeText={(text) => setResetPassword(text)}
                     placeholderTextColor={"#777777"}
                     autoCorrect={false}
                     
-                    secureTextEntry={true}
+                    secureTextEntry={showConfirmP}
                     maxLength={16} />
                 {/* <PasswordEye /> */}
+                <TouchableOpacity onPress={()=>setShowConfirmP(!showConfirmP)}>
+                    <Text>{showConfirmP?'Show':'Hide'}</Text>
+                </TouchableOpacity>
             </View>
             {err?.resetPasswordError &&<Text style={styles.errorMsg}>{err?.resetPasswordError}</Text>}
+            <Text style={styles.errorMsg}>{confirmPassErr}</Text>
             
             <TouchableOpacity onPress={() => signUpUser()} style={styles.singInButton}>
                 <Text style={styles.buttonTextStyle}>{"Sign Up"}</Text>
@@ -185,8 +206,11 @@ const styles = StyleSheet.create({
         marginLeft: wp("8%"),
         marginVertical: hp("1%"),
         marginRight: wp("8%"),
-        justifyContent: 'center',
-        width: wp(89)
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        alignItems:'center',
+        width: wp(89),
+        paddingEnd:10
     },
     textInputStyle: {
         fontWeight: '600',

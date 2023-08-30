@@ -23,7 +23,7 @@ export const Validate = (name:any, value:any, signUpPage:any) => {
         return error;
         case validationParam.resetPassword:
             if (!value) {
-              error = 'Confirm paswword field is required.';
+              error = 'Confirm password field is required.';
             }
         return error;
       case validationParam.name:
@@ -51,6 +51,8 @@ export const Validate = (name:any, value:any, signUpPage:any) => {
       case validationParam.phoneNumber:
         if (!value) {
           error = 'Phone number field is required.';
+        }else if(value.length<10 || value.length>15){
+          error = 'Phone number length must be between 10 to 15';
         }
         return error;
       default:

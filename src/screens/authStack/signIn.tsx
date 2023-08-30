@@ -12,6 +12,8 @@ const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [err, setErr] = useState<any>({});
+    const [showPassword, setShowPassword] = useState(true);
+
     const navigation = useNavigation<any>()
     const { allUsersDetail } = useSelector<any, any>((store) => store.cookies);
     console.log(allUsersDetail, "allUsersDetail======>11111")
@@ -38,18 +40,12 @@ const SignIn = () => {
                 setPassword('')
                 setErr({})
                 dispatch(setLogin(true))
-                navigation.navigate("TabNavigator")
+                navigation.navigate("DrawerNavigator")
             }else{
                 Show_Toast("You are Not application user.")
             }
 
-          
-
-
-
         }
-
-
     }
 
     return (
@@ -62,25 +58,28 @@ const SignIn = () => {
                 </View>
                 <View style={[styles.textInpurViewStyle, { marginTop: hp("10%") }]} >
                     <TextInput
-                        style={[styles.textInputStyle, { height: Platform.OS === 'ios' ? 40 : 40 }]}
+                        style={[styles.textInputStyle, {width:'100%', height: Platform.OS === 'ios' ? 40 : 40 }]}
                         placeholder="Email"
                         keyboardType={"email-address"}
                         onChangeText={(text) => setEmail(text)}
                         placeholderTextColor={'#777777'}
                         value={email}
+                        autoCapitalize="none"
                     />
                 </View>
                 {err?.email && <Text style={styles.errorMsg}>{err?.email}</Text>}
-                <View style={[styles.textInpurViewStyle, { marginTop: hp("1%"), flexDirection: 'row', alignItems: 'center' }]} >
+                <View style={[styles.textInpurViewStyle, { marginTop: hp("1%"),  alignItems: 'center' }]} >
                     <TextInput
-                        style={[styles.textInputStyle, { width: '92%', height: Platform.OS === 'ios' ? 40 : 40 }]}
+                        style={[styles.textInputStyle, {width:'80%', height: Platform.OS === 'ios' ? 40 : 40 }]}
                         placeholder="Password"
                         onChangeText={(text) => setPassword(text)}
                         placeholderTextColor={'#777777'}
+                        secureTextEntry={showPassword}
                         value={password}
                     />
 
-                    <TouchableOpacity onPress={() => setPasswordShow(!passwordShow)}>
+                    <TouchableOpacity onPress={()=>setShowPassword(!showPassword)}>
+                        <Text>{showPassword?'Show':'Hide'}</Text>
                     </TouchableOpacity>
                 </View>
                 {err?.password && <Text style={styles.errorMsg}>{err?.password}</Text>}
@@ -143,7 +142,10 @@ const styles = StyleSheet.create({
         marginLeft: wp("8%"),
         marginVertical: hp("1%"),
         marginRight: wp("8%"),
-        justifyContent: 'center'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingEnd:10,
+        width: wp(89),
     },
     textInputStyle: {
         fontWeight: '600',

@@ -5,13 +5,18 @@ import ColorCode from "../../constant/Styles";
 import SelectImage from "../../components/selectImage";
 import { checkMultiple, Permission, PERMISSIONS, requestMultiple } from "react-native-permissions";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 const Profile = () => {
-
+    const navigation = useNavigation<any>()
     const [picker, openPicker] = React.useState(false)
-    const {selectedImage } = useSelector<any, any>((store) => store.sliceReducer);
-console.log(selectedImage,"selectedImage=====>")
+    const { selectedImage } = useSelector<any, any>((store) => store.sliceReducer);
+    console.log(selectedImage, "selectedImage=====>")
+    
+    
     useEffect(() => {
+
         if (Platform.OS === "ios") {
+            
             checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MICROPHONE, PERMISSIONS.IOS.CONTACTS]).then((statuses) => {
                 console.log("check====Camera--1--Ios---->", statuses[PERMISSIONS.IOS.CAMERA]);
                 console.log("check====Microphone-----Ios---->", statuses[PERMISSIONS.IOS.CONTACTS]);
@@ -46,12 +51,16 @@ console.log(selectedImage,"selectedImage=====>")
             keyboardShouldPersistTaps="always"
             keyboardDismissMode='interactive'>
 
+
+            <TouchableOpacity onPress={() => {navigation.openDrawer();}}
+                style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: ColorCode.blue_Button_Color }}>
+                <Text style={{ padding: 10, color: 'white' }}>Open Drawer</Text></TouchableOpacity>
             {picker && <SelectImage close={() => { openPicker(false) }} />}
             <TouchableOpacity onPress={() => { openPicker(true) }}
                 style={{ backgroundColor: 'white', padding: 5, borderRadius: 100, width: 200, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 200, marginTop: 30 }}>
-                 {selectedImage?.uri &&
+                {selectedImage?.uri &&
                     <Image source={selectedImage?.uri} style={{ width: 200, height: 200, borderRadius: 100 }} />
-                 }
+                }
                 <TouchableOpacity onPress={() => { openPicker(true) }} style={{
                     height: 40, width: 45, backgroundColor: 'white', position: 'absolute', bottom: 10, right: 10, borderRadius: 5, alignItems: 'center', justifyContent: 'center',
                     elevation: 5, shadowColor: '#000',
@@ -64,7 +73,7 @@ console.log(selectedImage,"selectedImage=====>")
 
 
 
-<Text style={{fontSize:16,marginTop:20,textAlign:'center',color:'black',}}>Please select your image</Text>
+            <Text style={{ fontSize: 16, marginTop: 20, textAlign: 'center', color: 'black', }}>Please select your image</Text>
 
         </ScrollView>
     )
